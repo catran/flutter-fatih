@@ -17,6 +17,10 @@ class _AuthScreenState extends State<AuthScreen> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
+  TextEditingController _hakkimdaController = TextEditingController();
+  TextEditingController _cinsiyetController = TextEditingController();
+  TextEditingController _dogTarController = TextEditingController();
+  TextEditingController _UzmanlikController = TextEditingController();
   final _loginForm = GlobalKey<FormState>();
   bool _isLoading = false;
   bool _isSignUp = false;
@@ -26,6 +30,7 @@ class _AuthScreenState extends State<AuthScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _nameController.dispose();
+    _hakkimdaController.dispose();
   }
 
   Future<void> _saveForm() async {
@@ -46,10 +51,13 @@ class _AuthScreenState extends State<AuthScreen> {
             email: _emailController.text, password: _passwordController.text);
 
         await result.user.updateProfile(displayName: _nameController.text);
-        await mFireStore
-            .collection('users')
-            .doc(result.user.uid)
-            .set({'name': _nameController.text});
+        await mFireStore.collection('users').doc(result.user.uid).set({
+          'name': _nameController.text,
+          'Cinsiyet': _cinsiyetController.text,
+          'DogumTarihi': _dogTarController.text,
+          'UzmanlikAlani': _UzmanlikController.text,
+          "Hakkımda": _hakkimdaController.text,
+        });
       }
 
       if (result != null && result.user != null)
@@ -98,7 +106,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       children: [
                         Center(
                           child: Text(
-                            'WELCOME TO CHAT APP',
+                            'Chat ',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 24,
@@ -159,14 +167,103 @@ class _AuthScreenState extends State<AuthScreen> {
                                 keyboardType: TextInputType.visiblePassword,
                                 decoration: InputDecoration(
                                   icon: Icon(Icons.person),
-                                  labelText: 'Name',
+                                  labelText: 'Ad Soyad:',
                                   filled: true,
                                   fillColor: Colors.white,
                                   border: InputBorder.none,
                                   contentPadding: const EdgeInsets.all(16),
                                 ),
                                 validator: (value) => value.isEmpty
-                                    ? 'Name cannot be empty'
+                                    ? 'İsim soyisim boş olamaz.'
+                                    : null,
+                              )
+                            : Container(),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        _isSignUp
+                            ? TextFormField(
+                                controller: _dogTarController,
+                                maxLines: 1,
+                                textInputAction: TextInputAction.done,
+                                keyboardType: TextInputType.visiblePassword,
+                                decoration: InputDecoration(
+                                  icon: Icon(Icons.person),
+                                  labelText: 'Doğum Tarihiniz:',
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: InputBorder.none,
+                                  contentPadding: const EdgeInsets.all(16),
+                                ),
+                                validator: (value) => value.isEmpty
+                                    ? 'Doğum tarihiniz boş olamaz.'
+                                    : null,
+                              )
+                            : Container(),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        _isSignUp
+                            ? TextFormField(
+                                controller: _cinsiyetController,
+                                maxLines: 1,
+                                textInputAction: TextInputAction.done,
+                                keyboardType: TextInputType.visiblePassword,
+                                decoration: InputDecoration(
+                                  icon: Icon(Icons.person),
+                                  labelText: 'Cinsiyet',
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: InputBorder.none,
+                                  contentPadding: const EdgeInsets.all(16),
+                                ),
+                                validator: (value) => value.isEmpty
+                                    ? 'Cinsiyet boş olamaz.'
+                                    : null,
+                              )
+                            : Container(),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        _isSignUp
+                            ? TextFormField(
+                                controller: _hakkimdaController,
+                                maxLines: 1,
+                                textInputAction: TextInputAction.done,
+                                keyboardType: TextInputType.visiblePassword,
+                                decoration: InputDecoration(
+                                  icon: Icon(Icons.person),
+                                  labelText: 'Hakkımda',
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: InputBorder.none,
+                                  contentPadding: const EdgeInsets.all(16),
+                                ),
+                                validator: (value) => value.isEmpty
+                                    ? 'Hakkımda boş olamaz.'
+                                    : null,
+                              )
+                            : Container(),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        _isSignUp
+                            ? TextFormField(
+                                controller: _UzmanlikController,
+                                maxLines: 1,
+                                textInputAction: TextInputAction.done,
+                                keyboardType: TextInputType.visiblePassword,
+                                decoration: InputDecoration(
+                                  icon: Icon(Icons.person),
+                                  labelText:
+                                      'Uzmanlik Alanı:(Danışansanız danışan yazınız.)',
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: InputBorder.none,
+                                  contentPadding: const EdgeInsets.all(16),
+                                ),
+                                validator: (value) => value.isEmpty
+                                    ? 'Uzmanlık alanı boş olamaz.'
                                     : null,
                               )
                             : Container(),

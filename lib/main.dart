@@ -1,16 +1,21 @@
-import 'package:chat_application/chat_screen.dart';
 import 'package:chat_application/home_screen.dart';
+import 'package:chat_application/profile/profile_screen.dart';
+import 'package:chat_application/screens/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'auth_screen.dart';
 
+String _profilad = "";
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
 }
+
+dynamic loginUserName = "Cansu Cavuldak";
+dynamic hakkimda1 = "Hakkımdaaaa";
 
 class MyApp extends StatelessWidget {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -23,11 +28,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.lightBlue,
       ),
       home: SafeArea(
-        child: _auth.currentUser == null ? AuthScreen() : HomeScreen(),
+        child: Home(),
       ),
       routes: {
         HomeScreen.routeName: (_) => HomeScreen(),
         AuthScreen.routeName: (_) => AuthScreen(),
+        ProfileScreen.routeName: (_) => ProfileScreen(),
       },
       debugShowCheckedModeBanner: false,
     );
